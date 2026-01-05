@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lance Exteriors</title>
+  <meta name="description" content="Roof cleaning and care." />
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <img src="img/logo_nav.png" alt="" />
+        <div class="brand-text">
+          <span class="brand-name">Lance Exteriors</span>
+          <span class="brand-tagline">Roof Cleaning Experts</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#services">Services</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1>Make your home look new again.</h1>
+        <p>Roof cleaning, gutters, and exterior wash - done safely and professionally.</p>
+        <div class="cta">
+          <a class="btn" href="#contact">Get a Quote</a>
+          <a class="btn btn-ghost" href="tel:+1XXXXXXXXXX">Call</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section">
+      <div class="wrap">
+        <h2>Services</h2>
+        <ul class="cards">
+          <li class="card">
+            <h3>Roof Cleaning</h3>
+            <p>Softwash where appropriate. Protects shingles and improves curb appeal.</p>
+          </li>
+          <li class="card">
+            <h3>Gutter Cleaning</h3>
+            <p>Clear, flush, and verify downspouts.</p>
+          </li>
+          <li class="card">
+            <h3>House Wash</h3>
+            <p>Siding wash for a clean, bright exterior.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="reviews" class="section alt">
+      <div class="wrap">
+        <h2>Reviews</h2>
+        <p>Coming next: Google reviews or curated testimonials.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="wrap">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:hello@lanceexteriors.com">hello@lanceexteriors.com</a></p>
+        <p>Phone: <a href="tel:+1XXXXXXXXXX">+1 (XXX) XXX-XXXX</a></p>
+        <p>
+          <a class="btn" href="mailto:hello@lanceexteriors.com?subject=Quote%20Request">
+            Request a Quote
+          </a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <small>&copy; <span id="year"></span> Lance Exteriors</small>
+    </div>
+  </footer>
+
+  <script src="js/site.js"></script>
+
+  <!-- Viewport diagnostics -->
+  <script>
+    (function () {
+      function setVw() {
+        var vv = window.visualViewport;
+        var cssW = vv ? vv.width : document.documentElement.clientWidth;
+        var cssH = vv ? vv.height : document.documentElement.clientHeight;
+
+        document.body.setAttribute("data-vw", Math.round(cssW) + "px");
+        document.body.setAttribute("data-vh", Math.round(cssH) + "px");
+        document.body.setAttribute("data-dpr", String(window.devicePixelRatio || 1));
+        document.body.setAttribute("data-sw", screen && screen.width ? String(screen.width) : "?");
+        document.body.setAttribute("data-sh", screen && screen.height ? String(screen.height) : "?");
+      }
+
+      setVw();
+
+      window.addEventListener("resize", setVw, { passive: true });
+      window.addEventListener("orientationchange", setVw, { passive: true });
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener("resize", setVw, { passive: true });
+        window.visualViewport.addEventListener("scroll", setVw, { passive: true });
+      }
+    })();
+  </script>
+
+</body>
+</html>
