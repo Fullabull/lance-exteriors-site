@@ -218,23 +218,6 @@ body.design-mode .site-header {
   }
 }
 
-
-#paletteIndexOverlay {
-  position: fixed;
-  top: 8px;
-  right: 8px;
-  z-index: 10001;
-
-  background: rgba(0, 0, 0, 0.75);
-  color: #fff;
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: 6px;
-
-  display: none;
-  pointer-events: none;
-}
-
 /* =========================
    Viewport debug overlay
 ========================= */
