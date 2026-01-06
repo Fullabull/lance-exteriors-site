@@ -331,6 +331,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---- logo: tap cycles ALL; long-press (700ms) opens family menu ----
   var logo = document.getElementById("paletteToggle");
+
+  if (logo) {
+        logo.addEventListener("contextmenu", function (e) {
+                e.preventDefault();
+              });
+  }
+
   var pressTimer = null;
   var longPressFired = false;
 

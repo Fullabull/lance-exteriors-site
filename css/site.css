@@ -51,7 +51,7 @@ body.design-mode .site-header {
 }
 
 .brand img {
-  height: 38px;
+  height: 52px;
   width: auto;
   display: block;
 }
@@ -167,6 +167,12 @@ body.design-mode .site-header {
    Palette Control (design-only)
 ========================= */
 
+#paletteToggle {
+  -webkit-touch-callout: none; /* iOS long-press menu */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
 
 #paletteControl { display: none; }
 
@@ -239,7 +245,7 @@ body.design-mode .site-header {
    Viewport debug overlay
 ========================= */
 
-body::after {
+body.design-mode::after {
   content: "vw " attr(data-vw)
            " | vh " attr(data-vh)
            " | dpr " attr(data-dpr)
