@@ -3,69 +3,97 @@
 // =========================================================
 
 const palettes = [
-  ["#FFFFFFFF","#FFFFFFFF","#FFFFFFFF","#FFFFFFFF","#FFFFFFFF"],
-  ["#FFFFF4FF","#FFFFF4FF","#FFFFF4FF","#FFFFF4FF","#FFFFF4FF"],
-  ["#FFFFF2FF","#FFFFF2FF","#FFFFF2FF","#FFFFF2FF","#FFFFF2FF"],
-  ["#FFFFF0FF","#FFFFF0FF","#FFFFF0FF","#FFFFF0FF","#FFFFF0FF"],
-  ["#FFFAFAFF","#FFFAFAFF","#FFFAFAFF","#FFFAFAFF","#FFFAFAFF"],
-  ["#F9F9F9FF","#F9F9F9FF","#F9F9F9FF","#F9F9F9FF","#F9F9F9FF"],
-  ["#F7F7F7FF","#F7F7F7FF","#F7F7F7FF","#F7F7F7FF","#F7F7F7FF"],
-  ["#F2F2F2FF","#F2F2F2FF","#F2F2F2FF","#F2F2F2FF","#F2F2F2FF"],
-  ["#FDFCF3FF","#FDFCF3FF","#FDFCF3FF","#FDFCF3FF","#FDFCF3FF"],
-  ["#FFFFF4FF","#FFFFF4FF","#FFFFF4FF","#FFFFF4FF","#FFFFF4FF"],
+  // [0] Global reset / site default
+  ["#FFFFFFFF", "#FFFFFFFF", "#FFFFFFFF", "#F7F7F7FF", "#FFFFFFFF"],
 
-  ["#FFFDD0FF","#FFFDD0FF","#FFFDD0FF","#FFFDD0FF","#FFFDD0FF"],
-  ["#FFF8DCFF","#FFF8DCFF","#FFF8DCFF","#FFF8DCFF","#FFF8DCFF"],
-  ["#FFFAF0FF","#FFFAF0FF","#FFFAF0FF","#FFFAF0FF","#FFFAF0FF"],
-  ["#FFF5EEFF","#FFF5EEFF","#FFF5EEFF","#FFF5EEFF","#FFF5EEFF"],
-  ["#FFEFDBFF","#FFEFDBFF","#FFEFDBFF","#FFEFDBFF","#FFEFDBFF"],
-  ["#FFEBCDFF","#FFEBCDFF","#FFEBCDFF","#FFEBCDFF","#FFEBCDFF"],
-  ["#FEF5D5FF","#FEF5D5FF","#FEF5D5FF","#FEF5D5FF","#FEF5D5FF"],
-  ["#FEF2D4FF","#FEF2D4FF","#FEF2D4FF","#FEF2D4FF","#FEF2D4FF"],
-  ["#FEF1D6FF","#FEF1D6FF","#FEF1D6FF","#FEF1D6FF","#FEF1D6FF"],
-  ["#FCEFD3FF","#FCEFD3FF","#FCEFD3FF","#FCEFD3FF","#FCEFD3FF"],
+  // =========================================================
+  // FAMILY 1: Original Icon (Coolors)
+  // start: 1, count: 13  (includes default row)
+  // =========================================================
+  ["#FFFFFFFF", "#FFFFFFFF", "#FFFFFFFF", "#F7F7F7FF", "#FFFFFFFF"],
+  ["#1D311DFF", "#415B38FF", "#BDBCA7FF", "#FCEFD3FF", "#263B28FF"],
+  ["#F9F0D8FF", "#33482FFF", "#233A24FF", "#1D311DFF", "#263B28FF"],
+  ["#FEF2D4FF", "#656E5BFF", "#3A4D38FF", "#33482FFF", "#415B38FF"],
+  ["#33482FFF", "#E2DBC5FF", "#FEF2D4FF", "#47593FFF", "#FEF5D5FF"],
+  ["#FEF5D5FF", "#47593FFF", "#E2DBC5FF", "#FBF4DDFF", "#1F3923FF"],
+  ["#415B38FF", "#F9F0D8FF", "#233A24FF", "#BDBCA7FF", "#29412AFF"],
+  ["#233A24FF", "#3A4D38FF", "#919481FF", "#656E5BFF", "#FEF1D6FF"],
+  ["#656E5BFF", "#1D311DFF", "#47593FFF", "#FDF3D6FF", "#233A24FF"],
+  ["#FEF1D6FF", "#29412AFF", "#FEF2D4FF", "#415B38FF", "#FCEFD3FF"],
+  ["#3A4D38FF", "#656E5BFF", "#1D311DFF", "#47593FFF", "#FDF3D6FF"],
+  ["#263B28FF", "#1D311DFF", "#29412AFF", "#415B38FF", "#FEF2D4FF"],
+  ["#919481FF", "#656E5BFF", "#1D311DFF", "#47593FFF", "#FDF3D6FF"],
 
-  ["#FBF7F5FF","#FBF7F5FF","#FBF7F5FF","#FBF7F5FF","#FBF7F5FF"],
-  ["#FBF4DDFF","#FBF4DDFF","#FBF4DDFF","#FBF4DDFF","#FBF4DDFF"],
-  ["#FAF0E6FF","#FAF0E6FF","#FAF0E6FF","#FAF0E6FF","#FAF0E6FF"],
-  ["#FAEBD7FF","#FAEBD7FF","#FAEBD7FF","#FAEBD7FF","#FAEBD7FF"],
-  ["#F9F1F1FF","#F9F1F1FF","#F9F1F1FF","#F9F1F1FF","#F9F1F1FF"],
-  ["#F9F0D8FF","#F9F0D8FF","#F9F0D8FF","#F9F0D8FF","#F9F0D8FF"],
-  ["#FDF5E6FF","#FDF5E6FF","#FDF5E6FF","#FDF5E6FF","#FDF5E6FF"],
-  ["#FDF3D6FF","#FDF3D6FF","#FDF3D6FF","#FDF3D6FF","#FDF3D6FF"],
-  ["#F0EAD6FF","#F0EAD6FF","#F0EAD6FF","#F0EAD6FF","#F0EAD6FF"],
-  ["#E2DBC5FF","#E2DBC5FF","#E2DBC5FF","#E2DBC5FF","#E2DBC5FF"],
+  // =========================================================
+  // FAMILY 2: Balanced Greens
+  // start: 14, count: 11 (includes default row)
+  // =========================================================
+  ["#FFFFFFFF", "#FFFFFFFF", "#FFFFFFFF", "#F7F7F7FF", "#FFFFFFFF"],
+  ["#1D311DFF", "#656E5BFF", "#FCEFD3FF", "#FBF4DDFF", "#263B28FF"],
+  ["#FFFFFFFF", "#FEF2D4FF", "#33482FFF", "#1D311DFF", "#FBF4DDFF"],
+  ["#263B28FF", "#1D311DFF", "#FBF4DDFF", "#FEF2D4FF", "#313131FF"],
+  ["#FCEFD3FF", "#FBF4DDFF", "#1D311DFF", "#263B28FF", "#656E5BFF"],
+  ["#33482FFF", "#263B28FF", "#FEF2D4FF", "#FCEFD3FF", "#FFFFFFFF"],
+  ["#FBF4DDFF", "#FCEFD3FF", "#656E5BFF", "#33482FFF", "#1D311DFF"],
+  ["#656E5BFF", "#313131FF", "#FFFFFFFF", "#919481FF", "#FEF2D4FF"],
+  ["#FEF2D4FF", "#FFFFFFFF", "#263B28FF", "#656E5BFF", "#33482FFF"],
+  ["#919481FF", "#33482FFF", "#FBF4DDFF", "#FEF2D4FF", "#313131FF"],
+  ["#313131FF", "#919481FF", "#1D311DFF", "#FFFFFFFF", "#FCEFD3FF"],
 
-  ["#BDBCA7FF","#BDBCA7FF","#BDBCA7FF","#BDBCA7FF","#BDBCA7FF"],
-  ["#BBD58EFF","#BBD58EFF","#BBD58EFF","#BBD58EFF","#BBD58EFF"],
-  ["#919481FF","#919481FF","#919481FF","#919481FF","#919481FF"],
-  ["#656E5BFF","#656E5BFF","#656E5BFF","#656E5BFF","#656E5BFF"],
-  ["#5A6F4EFF","#5A6F4EFF","#5A6F4EFF","#5A6F4EFF","#5A6F4EFF"],
-  ["#588157FF","#588157FF","#588157FF","#588157FF","#588157FF"],
-  ["#4A4A4AFF","#4A4A4AFF","#4A4A4AFF","#4A4A4AFF","#4A4A4AFF"],
-  ["#47593FFF","#47593FFF","#47593FFF","#47593FFF","#47593FFF"],
-  ["#415B38FF","#415B38FF","#415B38FF","#415B38FF","#415B38FF"],
-  ["#3F523FFF","#3F523FFF","#3F523FFF","#3F523FFF","#3F523FFF"],
+  // =========================================================
+  // FAMILY 3: Softened Greens
+  // start: 25, count: 11 (includes default row)
+  // =========================================================
+  ["#FFFFFFFF", "#FFFFFFFF", "#FFFFFFFF", "#F7F7F7FF", "#FFFFFFFF"],
+  ["#3E4F3EFF", "#656E5BFF", "#FCEFD3FF", "#FBF4DDFF", "#3F523FFF"],
+  ["#FFFFFFFF", "#FEF2D4FF", "#33482FFF", "#3E4F3EFF", "#FBF4DDFF"],
+  ["#3F523FFF", "#3E4F3EFF", "#FBF4DDFF", "#FEF2D4FF", "#313131FF"],
+  ["#FCEFD3FF", "#FBF4DDFF", "#3E4F3EFF", "#3F523FFF", "#656E5BFF"],
+  ["#33482FFF", "#3F523FFF", "#FEF2D4FF", "#FCEFD3FF", "#FFFFFFFF"],
+  ["#FBF4DDFF", "#FCEFD3FF", "#656E5BFF", "#33482FFF", "#3E4F3EFF"],
+  ["#656E5BFF", "#313131FF", "#FFFFFFFF", "#919481FF", "#FEF2D4FF"],
+  ["#FEF2D4FF", "#FFFFFFFF", "#3F523FFF", "#656E5BFF", "#33482FFF"],
+  ["#919481FF", "#33482FFF", "#FBF4DDFF", "#FEF2D4FF", "#313131FF"],
+  ["#313131FF", "#919481FF", "#3E4F3EFF", "#FFFFFFFF", "#FCEFD3FF"],
 
-  ["#3E4F3EFF","#3E4F3EFF","#3E4F3EFF","#3E4F3EFF","#3E4F3EFF"],
-  ["#3A5A40FF","#3A5A40FF","#3A5A40FF","#3A5A40FF","#3A5A40FF"],
-  ["#3A4D38FF","#3A4D38FF","#3A4D38FF","#3A4D38FF","#3A4D38FF"],
-  ["#344E41FF","#344E41FF","#344E41FF","#344E41FF","#344E41FF"],
-  ["#33482FFF","#33482FFF","#33482FFF","#33482FFF","#33482FFF"],
-  ["#313131FF","#313131FF","#313131FF","#313131FF","#313131FF"],
-  ["#29412AFF","#29412AFF","#29412AFF","#29412AFF","#29412AFF"],
-  ["#263B28FF","#263B28FF","#263B28FF","#263B28FF","#263B28FF"],
-  ["#233A24FF","#233A24FF","#233A24FF","#233A24FF","#233A24FF"],
-  ["#1D311DFF","#1D311DFF","#1D311DFF","#1D311DFF","#1D311DFF"]
+  // =========================================================
+  // FAMILY 4: Natural Greens
+  // start: 36, count: 11 (includes default row)
+  // =========================================================
+  ["#FFFFFFFF", "#FFFFFFFF", "#FFFFFFFF", "#F7F7F7FF", "#FFFFFFFF"],
+  ["#3A5A40FF", "#588157FF", "#FCEFD3FF", "#FBF4DDFF", "#5A6F4EFF"],
+  ["#FFFFFFFF", "#BBD58EFF", "#344E41FF", "#3A5A40FF", "#FBF4DDFF"],
+  ["#5A6F4EFF", "#344E41FF", "#FBF4DDFF", "#BBD58EFF", "#4A4A4AFF"],
+  ["#FCEFD3FF", "#FBF4DDFF", "#3A5A40FF", "#5A6F4EFF", "#588157FF"],
+  ["#344E41FF", "#5A6F4EFF", "#BBD58EFF", "#FCEFD3FF", "#FFFFFFFF"],
+  ["#FBF4DDFF", "#FCEFD3FF", "#588157FF", "#344E41FF", "#3A5A40FF"],
+  ["#588157FF", "#4A4A4AFF", "#FFFFFFFF", "#BBD58EFF", "#FCEFD3FF"],
+  ["#BBD58EFF", "#FFFFFFFF", "#5A6F4EFF", "#588157FF", "#344E41FF"],
+  ["#919481FF", "#344E41FF", "#FBF4DDFF", "#BBD58EFF", "#4A4A4AFF"],
+  ["#4A4A4AFF", "#919481FF", "#3A5A40FF", "#FFFFFFFF", "#FCEFD3FF"],
+
+  // =========================================================
+  // FAMILY 5: Warm Neutrals
+  // start: 47, count: 10 (includes default row)
+  // =========================================================
+  ["#FFFFFFFF", "#FFFFFFFF", "#FFFFFFFF", "#F7F7F7FF", "#FFFFFFFF"],
+  ["#FFFFF2FF", "#F9F9F9FF", "#FFFDD0FF", "#FFFAFAFF", "#F0EAD6FF"],
+  ["#FDFCF3FF", "#FFFFF4FF", "#FFF8DCFF", "#FBF7F5FF", "#FFEBCDFF"],
+  ["#FFFAF0FF", "#F2F2F2FF", "#FFEFDBFF", "#F9F1F1FF", "#FAF0E6FF"],
+  ["#FFF5EEFF", "#FFFFF0FF", "#FDF5E6FF", "#FFFAFAFF", "#FAEBD7FF"],
+  ["#FBF7F5FF", "#F9F9F9FF", "#FFFDD0FF", "#FDFCF3FF", "#F0EAD6FF"],
+  ["#FFFFF4FF", "#F2F2F2FF", "#FFF8DCFF", "#FFEFDBFF", "#FAF0E6FF"],
+  ["#FFFAFAFF", "#FFFFF2FF", "#FFEBCDFF", "#FDF5E6FF", "#F9F1F1FF"],
+  ["#FDFCF3FF", "#FFF5EEFF", "#F0EAD6FF", "#FBF7F5FF", "#FFFDD0FF"],
+  ["#FFFFF0FF", "#F9F9F9FF", "#FAEBD7FF", "#FFFAF0FF", "#FDF5E6FF"]
 ];
 
 const paletteFamilies = [
-  { name: "White to Light",  start: 0,  count: 10 },
-  { name: "Light and Creme", start: 10, count: 10 },
-  { name: "Skin to Medium",  start: 20, count: 10 },
-  { name: "Medium to Earth", start: 30, count: 10 },
-  { name: "Earth to Dark",   start: 40, count: 10 },
-  { name: "All (Full Range)", start: 0, count: palettes.length }
+  { name: "Original Icon (Coolors)", start: 1,  count: 13 },
+  { name: "Balanced Greens",         start: 14, count: 11 },
+  { name: "Softened Greens",         start: 25, count: 11 },
+  { name: "Natural Greens",          start: 36, count: 11 },
+  { name: "Warm Neutrals",           start: 47, count: 10 }
 ];
 
 // =========================================================
@@ -77,53 +105,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 
-  function updatePaletteIndexOverlay() {
-    var el = document.getElementById("paletteIndexOverlay");
-    if (!el) return;
-  
-    if (!designMode) {
-      el.style.display = "none";
-      return;
-    }
-  
-    var fam = paletteFamilies[activeFamilyIndex];
-    var absoluteIndex = fam.start + globalIndex + 1;
-    el.textContent = fam.name + " · Tone " + absoluteIndex + " / " + palettes.length;
-    el.style.display = "block";
-  }
-  
-  function updateSectionToneOverlay(target) {
-    var el = document.getElementById("tone-" + target);
-    if (!el) return;
-  
-    // If we’re not in design mode, hide/clear the label
-    if (!designMode) {
-      el.textContent = "";
-      return;
-    }
-  
-    var fam = paletteFamilies[activeFamilyIndex];
-    var idx = localIndex[target] || 0;      // local tone index for that section
-    var absoluteIndex = fam.start + idx + 1; // 1..50
-  
-    el.textContent = "Tone " + absoluteIndex;
-
-    var fam = paletteFamilies[activeFamilyIndex];
-    var idx = localIndex[target] || 0;
-    var absoluteIndex = fam.start + idx + 1; // 1..50
-
-    el.textContent = "Tone " + absoluteIndex;
-  }
-  
-function updateAllSectionToneOverlays() {
-  updateSectionToneOverlay("header");
-  updateSectionToneOverlay("hero");
-  updateSectionToneOverlay("services");
-  updateSectionToneOverlay("reviews");
-  updateSectionToneOverlay("contact");
-}
-  
-  
   // ---- color helpers ----
   function normHex8(hex) {
     if (!hex || hex[0] !== "#") return hex;
@@ -184,37 +165,12 @@ function updateAllSectionToneOverlays() {
     return "#" + to2(r) + to2(g) + to2(b) + a;
   }
 
-  function getPaletteRowByIndex(idxInFamily) {
-        var fam = paletteFamilies[activeFamilyIndex];
-        return palettes[fam.start + idxInFamily];
-  }
-
-  function applyGlobalAll() {
-    applyPaletteToTarget(getPaletteRowByIndex(globalIndex), "all");
-    updatePaletteIndexOverlay(); // shows global only
-    updateAllSectionToneOverlays(); // shows global only
-  }
-  
-  function applyLocal(target) {
-    applyPaletteToTarget(getPaletteRowByIndex(localIndex[target]), target);
-    updateSectionToneOverlay(target);
-    // NO overlay update here (because global counter must not change)
-  }
-
   // ---- state ----
-  var hasLocalChanges = false;
   var designMode = false;     // OFF until first logo tap or long-press
+  var activeSection = "all";  // "all" | header | hero | services | reviews | contact
+
   var activeFamilyIndex = 0;  // default family selection (menu will override)
-  var globalIndex = 0; // ONLY the logo increments this (overlay uses this)
-
-  var localIndex = {
-        header: 0,
-        hero: 0,
-        services: 0,
-        reviews: 0,
-        contact: 0
-  };
-
+  var paletteIndex = 0;       // index within the active family range
 
   // ---- apply palette to target ----
   function applyPaletteToTarget(p, target) {
@@ -272,8 +228,28 @@ function updateAllSectionToneOverlays() {
     else if (target === "contact") doContact();
   }
 
+  function getActivePaletteRow() {
+    var fam = paletteFamilies[activeFamilyIndex];
+    var idx = fam.start + paletteIndex;
+    return palettes[idx];
+  }
+
+  function applyCurrentPalette() {
+    var p = getActivePaletteRow();
+    applyPaletteToTarget(p, activeSection);
+  }
+
+  function nextPalette() {
+    var fam = paletteFamilies[activeFamilyIndex];
+    paletteIndex = (paletteIndex + 1) % fam.count;
+    //console.log("family", activeFamilyIndex, "paletteIndex", paletteIndex, "row", paletteFamilies[activeFamilyIndex].start + paletteIndex, getActivePaletteRow());
+
+    applyCurrentPalette();
+  }
+
   // Start at global default (palettes[0])
-  applyGlobalAll();
+  applyPaletteToTarget(palettes[0], "all");
+  applyCurrentPalette();
 
   // ---- menu (family picker) ----
   var control = document.getElementById("paletteControl");
@@ -311,77 +287,51 @@ function updateAllSectionToneOverlays() {
       designMode = false;
       document.body.classList.remove("design-mode");
       setDesignCursors(false);
-      hasLocalChanges = false;
-      updatePaletteIndexOverlay();
     });
     control.appendChild(exitBtn);
   }
 
   if (control) {
     hideMenu();
-  
+
     control.addEventListener("click", function (e) {
       var btn = e.target.closest("button");
       if (!btn) return;
-  
+
       var idxStr = btn.getAttribute("data-family-index");
       if (idxStr == null) return;
-  
+
       var idx = parseInt(idxStr, 10);
       if (isNaN(idx) || idx < 0 || idx >= paletteFamilies.length) return;
-  
-      // -------------------------------
-      // Switch family, preserving tones
-      // -------------------------------
-      var fam = paletteFamilies[idx];
-      var maxIndex = fam.count - 1;
-  
-      // Clamp global index to this family's range
-      if (globalIndex > maxIndex) {
-        globalIndex = maxIndex;
-      }
-  
-      // Clamp each local index to this family's range
-      localIndex.header   = Math.min(localIndex.header   || 0, maxIndex);
-      localIndex.hero     = Math.min(localIndex.hero     || 0, maxIndex);
-      localIndex.services = Math.min(localIndex.services || 0, maxIndex);
-      localIndex.reviews  = Math.min(localIndex.reviews  || 0, maxIndex);
-      localIndex.contact  = Math.min(localIndex.contact  || 0, maxIndex);
-  
-      // Now actually switch families
+
+      // Switch family, apply immediately
       activeFamilyIndex = idx;
+      paletteIndex = 0;          // first row of family (your sentinel default)
+      activeSection = "all";     // family selection feels global
       designMode = true;
       document.body.classList.add("design-mode");
-  
-      // Re-apply the global tone and refresh overlays/badges
-      //applyGlobalAll();
+
+      applyCurrentPalette();
       hideMenu();
     });
-  
+
     // Click outside closes menu (design-only convenience)
     document.addEventListener("click", function (e) {
       if (!designMode) return;
       if (!control || control.style.display === "none") return;
-  
+
       var insideMenu = e.target.closest("#paletteControl");
       var onLogo = e.target.closest("#paletteToggle");
       if (!insideMenu && !onLogo) {
-        e.preventDefault();
-        e.stopPropagation();
-        hideMenu();
+          e.preventDefault();
+          e.stopPropagation();
+          hideMenu();
       }
     }, true);
   }
 
   // ---- logo: tap cycles ALL; long-press (700ms) opens family menu ----
   var logo = document.getElementById("paletteToggle");
-
-  if (logo) {
-        logo.addEventListener("contextmenu", function (e) {
-                e.preventDefault();
-              });
-  }
-
   var pressTimer = null;
   var longPressFired = false;
 
@@ -404,7 +354,6 @@ function updateAllSectionToneOverlays() {
         document.body.classList.add("design-mode");
         setDesignCursors(true);        // add this when you wire cursors
   
-        updatePaletteIndexOverlay();
         showMenu();
       }, 700);
     });
@@ -419,38 +368,24 @@ function updateAllSectionToneOverlays() {
         e.stopPropagation();
         return;
       }
-    
+  
       // When designMode is OFF, logo click should do nothing (freeze behavior)
       if (!designMode) return;
-    
-      // Only warn if the user actually clicked a section since the last sweep
-      if (hasLocalChanges) {
-        var ok = window.confirm(
-          "This will reset your section tones to match the logo tone. Continue?"
-        );
-        if (!ok) {
-          e.preventDefault();
-          e.stopPropagation();
-          return;
-        }
-      }
-    
+  
       e.preventDefault();
       e.stopPropagation();
-    
-      var fam = paletteFamilies[activeFamilyIndex];
-      globalIndex = (globalIndex + 1) % fam.count;
-    
-      applyGlobalAll();      // your existing global sweep
-      hasLocalChanges = false;  // we just intentionally overwrote sections
-    });    
-
+  
+      activeSection = "all";
+      nextPalette();
+    });
   }
 
   // ---- section tap cycles that section (design mode only) ----
   function hookSection(target, selector) {
     var el = document.querySelector(selector);
     if (!el) return;
+
+    //el.style.cursor = "pointer";
 
     el.addEventListener("click", function (e) {
       if (!designMode) return;
@@ -460,14 +395,8 @@ function updateAllSectionToneOverlays() {
       e.preventDefault();
       e.stopPropagation();
 
-      hasLocalChanges = true;
-
-      var fam = paletteFamilies[activeFamilyIndex];
-      localIndex[target]++;
-      if (localIndex[target] >= fam.count) localIndex[target] = 0;
-
-      applyLocal(target);
-
+      activeSection = target;
+      nextPalette();
     });
   }
 
@@ -509,6 +438,5 @@ function updateAllSectionToneOverlays() {
   }
 
   setDesignCursors(false);
-  updatePaletteIndexOverlay();
 
 });
