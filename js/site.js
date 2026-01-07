@@ -87,18 +87,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     var fam = paletteFamilies[activeFamilyIndex];
-    var absoluteIndex = fam.start + globalIndex + 1;
-    el.textContent =
-      fam.name + " · Tone " + absoluteIndex + " / " + palettes.length;
+    var globalAbs = fam.start + globalIndex;  // absolute row in palettes[]
+    var toneNumber = globalAbs + 1;           // 1-based for display
+
+    el.textContent = fam.name + " · Tone " + toneNumber + " / " + palettes.length;
     el.style.display = "block";
   }
 
+
   function recomputeHasLocalChanges() {
+    var fam = paletteFamilies[activeFamilyIndex];
+    var globalAbs = fam.start + globalIndex; // absolute tone for the logo
+
     var keys = ["header", "hero", "services", "reviews", "contact"];
     var dirty = false;
 
     for (var i = 0; i < keys.length; i++) {
-      if (localIndex[keys[i]] !== globalIndex) {
+      var k = keys[i];
+      if (absTone[k] !== globalAbs) {
         dirty = true;
         break;
       }
@@ -117,11 +123,11 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    var fam = paletteFamilies[activeFamilyIndex];
-    var idx = localIndex[target] || 0; // local tone index for that section
-    var absoluteIndex = fam.start + idx + 1; // 1..N across the big table
+    // Use the absolute tone index for this section
+    var abs = absTone[target] || 0;
+    var toneNumber = abs + 1; // 1-based
 
-    el.textContent = "Tone " + absoluteIndex;
+    el.textContent = "Tone " + toneNumber;
   }
 
   function updateAllSectionToneOverlays() {
@@ -198,27 +204,48 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function applyGlobalAll() {
-    // Sync all locals to the current global tone
-    localIndex.header = globalIndex;
-    localIndex.hero = globalIndex;
+    var fam = paletteFamilies[activeFamilyIndex];
+    var globalAbs = fam.start + globalIndex; // absolute tone for logo
+
+    // Sync all locals to the current global tone (family-relative index)
+    localIndex.header   = globalIndex;
+    localIndex.hero     = globalIndex;
     localIndex.services = globalIndex;
-    localIndex.reviews = globalIndex;
-    localIndex.contact = globalIndex;
+    localIndex.reviews  = globalIndex;
+    localIndex.contact  = globalIndex;
+
+    // Update absolute tones for every section
+    absTone.header   = globalAbs;
+    absTone.hero     = globalAbs;
+    absTone.services = globalAbs;
+    absTone.reviews  = globalAbs;
+    absTone.contact  = globalAbs;
 
     // Apply that tone to all sections
-    var row = getPaletteRowByIndex(globalIndex);
-
+    var row = palettes[globalAbs];
     applyPaletteToTarget(row, "all");
+
     updatePaletteIndexOverlay();
     updateAllSectionToneOverlays();
-    recomputeHasLocalChanges(); // all sections now in sync
+    recomputeHasLocalChanges();   // all sections now in sync
   }
 
   function applyLocal(target) {
-    applyPaletteToTarget(getPaletteRowByIndex(localIndex[target]), target);
+    var fam = paletteFamilies[activeFamilyIndex];
+    var idxInFamily = localIndex[target] || 0;
+
+    // Compute absolute tone index for this section
+    var abs = fam.start + idxInFamily;
+    if (abs < 0) abs = 0;
+    if (abs >= palettes.length) abs = palettes.length - 1;
+
+    absTone[target] = abs;
+
+    var row = palettes[abs];
+    applyPaletteToTarget(row, target);
     updateSectionToneOverlay(target);
-    recomputeHasLocalChanges(); // may flip hasLocalChanges back to false
-    // NO overlay update here (because global counter must not change)
+    recomputeHasLocalChanges();   // keep hasLocalChanges in sync
+    // NO overlay update for global here (logo counter must not change)
   }
 
   // ---- state ----
@@ -228,6 +255,15 @@ document.addEventListener("DOMContentLoaded", function () {
   var globalIndex = 0; // ONLY the logo increments this (overlay uses this)
 
   var localIndex = {
+    header: 0,
+    hero: 0,
+    services: 0,
+    reviews: 0,
+    contact: 0
+  };
+
+  // Absolute tone index (0..palettes.length-1) per section
+  var absTone = {
     header: 0,
     hero: 0,
     services: 0,
@@ -342,95 +378,103 @@ document.addEventListener("DOMContentLoaded", function () {
     control.appendChild(exitBtn);
   }
 
+
   if (control) {
     hideMenu();
 
     control.addEventListener("click", function (e) {
       var btn = e.target.closest("button");
       if (!btn) return;
-  
+
       var idxStr = btn.getAttribute("data-family-index");
       if (idxStr == null) return;
-  
+
       var idx = parseInt(idxStr, 10);
       if (isNaN(idx) || idx < 0 || idx >= paletteFamilies.length) return;
-  
-      // -------------------------------
-      // Switch family, preserving *actual* tones
-      // -------------------------------
-  
+
+      var keys = ["header", "hero", "services", "reviews", "contact"];
+
+      // Snapshot old family + global tone
       var oldFam = paletteFamilies[activeFamilyIndex];
       var oldGlobalIndex = globalIndex;
-      var oldHasLocalChanges = hasLocalChanges;
-  
-      var fam = paletteFamilies[idx];
-      var maxIndex = fam.count - 1;
-  
-      // Capture the absolute tone (row in palettes[]) for each section
-      var keys = ["header", "hero", "services", "reviews", "contact"];
-      var absBefore = {};
-  
+      var oldGlobalAbs = oldFam.start + oldGlobalIndex;
+
+      // Snapshot absolute tones for each section BEFORE we change anything
+      var absSnapshot = {
+        header: absTone.header,
+        hero: absTone.hero,
+        services: absTone.services,
+        reviews: absTone.reviews,
+        contact: absTone.contact
+      };
+
+      // Detect whether there WERE local changes in the old family
+      var hadLocalChanges = false;
       for (var i = 0; i < keys.length; i++) {
         var k = keys[i];
-        var li = localIndex[k] || 0;
-        absBefore[k] = oldFam.start + li; // 0-based index into palettes[]
+        if (absSnapshot[k] !== oldGlobalAbs) {
+          hadLocalChanges = true;
+          break;
+        }
       }
-  
-      // Switch families
+
+      // Switch to the new family
       activeFamilyIndex = idx;
+      var fam = paletteFamilies[activeFamilyIndex];
+      var maxIndex = fam.count - 1;
+
       designMode = true;
       document.body.classList.add("design-mode");
       setDesignCursors(true);
-  
-      // New family always starts at its first tone
+
+      // New family always starts at its first tone for the logo
       globalIndex = 0;
-      if (globalIndex > maxIndex) {
-        globalIndex = maxIndex; // defensive, but 0 is always valid here
-      }
-  
-      if (!oldHasLocalChanges) {
-        // Case 1: everything was in sync with the logo.
-        // Move cleanly to the FIRST tone of the new family.
-        for (var j = 0; j < keys.length; j++) {
-          localIndex[keys[j]] = globalIndex;
-        }
-  
-        applyGlobalAll(); // also recomputes hasLocalChanges & overlays
+      if (globalIndex > maxIndex) globalIndex = maxIndex;
+      var newGlobalAbs = fam.start + globalIndex;
+
+      if (!hadLocalChanges) {
+        // Case 1: everything was in sync with the old logo.
+        // Just move the whole page to the first tone of the new family.
+        applyGlobalAll();  // updates absTone, overlays, and hasLocalChanges
       } else {
-        // Case 2: some sections are custom (out of sync with the logo).
-        // Sections that matched oldGlobalIndex follow the new global (now 0),
-        // custom sections keep their original absolute tone.
-  
-        for (var n = 0; n < keys.length; n++) {
-          var k2 = keys[n];
-          var li2 = localIndex[k2] || 0;
-  
-          if (li2 === oldGlobalIndex) {
+        // Case 2: some sections were custom.
+        // Sections that matched the old logo track the NEW logo.
+        // Custom sections keep their original absolute tone.
+
+        for (var j = 0; j < keys.length; j++) {
+          var k2 = keys[j];
+          var oldAbs = absSnapshot[k2];
+
+          if (oldAbs === oldGlobalAbs) {
             // This section was in sync with the logo before the switch.
-            // It should now track the FIRST tone of the new family.
-            localIndex[k2] = globalIndex;
-            applyLocal(k2); // uses new family & updates its overlay
+            // It should now follow the NEW family’s first tone.
+            absTone[k2] = newGlobalAbs;
+            localIndex[k2] = globalIndex;  // family-relative
           } else {
-            // Custom section: keep its original absolute tone.
-            var absIdx = absBefore[k2];
-            var row = palettes[absIdx];
-  
-            // Repaint this section with the exact same palette row as before
-            applyPaletteToTarget(row, k2);
-  
-            // And keep the numeric tone label stable for this section
-            var label = document.getElementById("tone-" + k2);
-            if (label) {
-              label.textContent = "Tone " + (absIdx + 1);
-            }
+            // Custom section: preserve its absolute tone across families.
+            absTone[k2] = oldAbs;
+
+            // Choose a safe family-relative index for future clicks.
+            // If the tone lies outside this family's range, clamp to nearest.
+            var candidate = oldAbs - fam.start;
+            if (candidate < 0) candidate = 0;
+            if (candidate > maxIndex) candidate = maxIndex;
+            localIndex[k2] = candidate;
           }
         }
-  
-        // Now recalc "out of sync" status and logo overlay
+
+        // Repaint each section according to absTone
+        for (var m = 0; m < keys.length; m++) {
+          var k3 = keys[m];
+          var row = palettes[absTone[k3]];
+          applyPaletteToTarget(row, k3);
+        }
+
+        updateAllSectionToneOverlays();
         recomputeHasLocalChanges();
         updatePaletteIndexOverlay();
       }
-  
+
       hideMenu();
     });
 
