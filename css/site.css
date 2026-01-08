@@ -174,7 +174,7 @@ body.design-mode .site-header {
 ========================= */
 
 #paletteToggle {
-  -webkit-touch-callout: none; /* iOS long-press menu */
+  -webkit-touch-callout: none;
   -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -184,14 +184,12 @@ body.design-mode .site-header {
 
 .palette-control {
   position: fixed;
-  top: 72px;          /* below header */
+  top: 72px;
   left: 8px;
   z-index: 10000;
-
   display: flex;
   flex-direction: column;
   gap: 6px;
-
   background: rgba(0, 0, 0, 0.65);
   padding: 8px;
   border-radius: 6px;
@@ -203,7 +201,6 @@ body.design-mode .site-header {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-
   background: #ffffff;
   color: #111;
 }
@@ -221,6 +218,7 @@ body.design-mode .site-header {
     gap: 24px;
   }
 
+  /* Optional: hide big logo under 450px — comment out if unwanted */
   .site-header .brand img {
     display: none;
   }
@@ -230,23 +228,19 @@ body.design-mode .site-header {
   }
 }
 
-
 #paletteIndexOverlay {
   position: fixed;
   top: 8px;
   right: 8px;
   z-index: 10001;
-
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
   font-size: 12px;
   padding: 6px 10px;
   border-radius: 6px;
-
   display: none;
   pointer-events: none;
 }
-
 
 .tone-badge {
   position: absolute;
@@ -259,12 +253,67 @@ body.design-mode .site-header {
   border-radius: 3px;
   pointer-events: none;
   z-index: 5000;
-  display: none; /* hidden by default */
+  display: none;
 }
 
-/* Only show badges in design mode */
 body.design-mode .tone-badge {
   display: block;
+}
+
+/* Hamburger hidden on desktop */
+.hamburger {
+  display: none;
+  font-size: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #0f2417;
+}
+
+/* NAV visible on desktop */
+.nav {
+  display: flex;
+}
+
+/* MOBILE RULES */
+@media (max-width: 780px) {
+  .nav { display: none; }
+  .hamburger { display: block; }
+
+  .brand {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .brand-text {
+    display: block;
+  }
+
+  .brand-name {
+    display: block;
+  }
+
+  .brand-tagline {
+    display: block;
+  }
+}
+
+.nav.open {
+  display: block;
+  background: #fff;
+  padding: 10px;
+}
+
+/* EXTRA SQUEEZE MODE ~450px */
+@media (max-width: 450px) {
+  .brand-name {
+    font-size: 1rem;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
 }
 
 /* =========================
@@ -286,4 +335,3 @@ body.design-mode::after {
   z-index: 9999;
   opacity: 0.85;
 }
-

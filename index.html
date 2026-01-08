@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lance Exteriors</title>
   <meta name="description" content="Roof cleaning and care." />
+  <meta name="theme-color" content="#0F2417">
   <link rel="stylesheet" href="css/site.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="shortcut icon" href="/favicon.ico">
 </head>
 <body>
 
@@ -25,6 +31,7 @@
         <a href="#reviews">Reviews</a>
         <a href="#contact">Contact</a>
       </nav>
+      <button class="hamburger" id="hamburgerBtn">☰</button>
     </div>
   </header>
 
@@ -128,6 +135,11 @@
         window.visualViewport.addEventListener("scroll", setVw, { passive: true });
       }
     })();
+  </script>
+  <script>
+      document.getElementById('hamburgerBtn').onclick = function () {
+            document.querySelector('.nav').classList.toggle('open');
+      };
   </script>
 
 <div id="paletteIndexOverlay"></div>
