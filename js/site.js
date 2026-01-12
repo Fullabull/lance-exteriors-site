@@ -77,6 +77,261 @@ document.addEventListener("DOMContentLoaded", function () {
   var y = document.getElementById("year");
   if (y) y.textContent = new Date().getFullYear();
 
+/* color persistence starts here */
+  var absTone = {
+    header: 0,
+    hero: 0,
+    services: 0,
+    reviews: 0,
+    contact: 0
+  };
+
+  // ---- persistence (localStorage + JSON files) ----
+  var LS_KEY_STATE = "lanceExteriorsPaletteState";
+
+
+  (function () {
+    // Each tagline has its own min/max display time in seconds
+    const taglines = [
+      { text: "Roof Care & Moss Control", min: 7, max: 10 },
+      { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
+      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+      { text: "Roof Cleaning & Moss Control", min: 9, max: 12 },
+      { text: "Roof Cleaning & Moss Prevention", min: 7, max: 10 },
+      { text: "Roof Moss Clearing & Prevention", min: 6, max: 10 },
+      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+      { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
+      { text: "Roof Moss Removal + Zinc Protection", min: 6, max: 9 },
+      { text: "Roof Moss Removal + Zinc Treatment", min: 6, max: 9 },
+      { text: "Roof Moss Removal + Long-Term Control", min: 6, max: 9 },
+      { text: "Moss Removal + Roof Protection", min: 7, max: 10 },
+      { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
+      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+      { text: "Roof Moss Removal + Treatment Included", min: 6, max: 8 },
+      { text: "Roof Moss Removal + Deep Treatment Upgrade", min: 6, max: 8 },
+      { text: "Roof Moss Removal + Long-Term Treatment Option", min: 6, max: 8 },
+      { text: "Architectural Shingle Roof Care", min: 8, max: 11 },
+      { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
+      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+      { text: "Architectural Shingle Moss Control", min: 8, max: 11 },
+      { text: "Architectural Shingle Moss Removal", min: 8, max: 11 }
+    ];
+  
+    const el = document.getElementById("heroTagline");
+    if (!el) return;
+  
+    function pickAndSchedule() {
+      const choice = taglines[Math.floor(Math.random() * taglines.length)];
+      el.textContent = choice.text;
+
+      const min = choice.min;
+      const max = choice.max;
+      const delaySeconds = min + Math.random() * (max - min); // random between min/max
+      const delayMs = delaySeconds * 1000;
+  
+      // DEBUG
+      //console.log("Tagline now:", choice.text, "for", delaySeconds.toFixed(1), "sec");
+  
+      setTimeout(pickAndSchedule, delayMs);
+    }
+  
+    pickAndSchedule(); // kick it off once on load
+  })();
+
+  function getCurrentPaletteState() {
+    return {
+      designMode: designMode,
+      activeFamilyIndex: activeFamilyIndex,
+      globalIndex: globalIndex,
+      absTone: {
+        header: absTone.header,
+        hero: absTone.hero,
+        services: absTone.services,
+        reviews: absTone.reviews,
+        contact: absTone.contact
+      }
+    };
+  }
+
+  function applyPaletteState(state, options) {
+    if (!state) return;
+    options = options || {};
+
+    // Clamp / validate family
+    var famIdx =
+      typeof state.activeFamilyIndex === "number" ? state.activeFamilyIndex : 0;
+    if (famIdx < 0 || famIdx >= paletteFamilies.length) famIdx = 0;
+    activeFamilyIndex = famIdx;
+
+    var fam = paletteFamilies[activeFamilyIndex];
+    var maxIndex = fam.count - 1;
+
+    // Clamp / validate global index (family-relative)
+    var gIndex =
+      typeof state.globalIndex === "number" ? state.globalIndex : 0;
+    if (gIndex < 0) gIndex = 0;
+    if (gIndex > maxIndex) gIndex = maxIndex;
+    globalIndex = gIndex;
+
+    var sections = ["header", "hero", "services", "reviews", "contact"];
+
+    for (var i = 0; i < sections.length; i++) {
+      var key = sections[i];
+
+      var abs =
+        state.absTone && typeof state.absTone[key] === "number"
+          ? state.absTone[key]
+          : fam.start + globalIndex;
+
+      if (abs < 0) abs = 0;
+      if (abs >= palettes.length) abs = palettes.length - 1;
+      absTone[key] = abs;
+
+      // derive family-relative local index from absolute tone
+      var rel = abs - fam.start;
+      if (rel < 0) rel = 0;
+      if (rel > maxIndex) rel = maxIndex;
+      localIndex[key] = rel;
+
+      var row = palettes[abs];
+      applyPaletteToTarget(row, key);
+    }
+
+    // Design mode handling:
+    var shouldDesignMode =
+      options.forceDesignModeOff ? false : !!state.designMode;
+
+    designMode = shouldDesignMode;
+
+    if (designMode) {
+      document.body.classList.add("design-mode");
+      setDesignCursors(true);
+    } else {
+      document.body.classList.remove("design-mode");
+      setDesignCursors(false);
+    }
+
+    updateAllSectionToneOverlays();
+    recomputeHasLocalChanges();
+    updatePaletteIndexOverlay();
+  }
+
+  function saveLocalState() {
+    try {
+      var s = getCurrentPaletteState();
+      window.localStorage.setItem(LS_KEY_STATE, JSON.stringify(s));
+    } catch (err) {
+      // localStorage might be blocked; ignore
+    }
+  }
+
+  function loadLocalState() {
+    try {
+      var raw = window.localStorage.getItem(LS_KEY_STATE);
+      if (!raw) return;
+      var s = JSON.parse(raw);
+      applyPaletteState(s);
+    } catch (err) {
+      // ignore parse / storage errors
+    }
+  }
+
+  function loadJsonState(url, onDone) {
+    fetch(url, { cache: "no-store" })
+      .then(function (resp) {
+        if (!resp.ok) throw new Error("HTTP " + resp.status);
+        return resp.json();
+      })
+      .then(function (json) {
+        // For shared JSON, force design mode OFF by default
+        applyPaletteState(json, { forceDesignModeOff: true });
+        if (onDone) onDone(true);
+      })
+      .catch(function () {
+        if (onDone) onDone(false);
+      });
+  }
+
+
+  function exitDesignModeAndSave() {
+    designMode = false;
+    document.body.classList.remove("design-mode");
+    setDesignCursors(false);
+    hasLocalChanges = false;
+    updatePaletteIndexOverlay();
+    updateAllSectionToneOverlays();
+    saveLocalState();
+    hideMenu();
+  }
+
+  function resetToDefaults() {
+    loadJsonState("defaultColors.json", function (ok) {
+      if (!ok) {
+        window.alert(
+          "defaultColors.json not found. Place it next to index.html to use Reset."
+        );
+        return;
+      }
+      //saveLocalState();
+      // defaultColors.json already forces designMode = false via loadJsonState
+      exitDesignModeAndSave();
+      window.alert("Palette reset to defaults.");
+    });
+  }
+
+
+  function saveCurrentColorsToFile() {
+    var state = getCurrentPaletteState();
+  
+    // Do not force all users into design mode when they load the shared JSON
+    state.designMode = false;
+  
+    var json = JSON.stringify(state, null, 2);
+    var blob = new Blob([json], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+  
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "currentColors.json";
+  
+    a.click();  // same pattern as your working test
+    URL.revokeObjectURL(url);
+  
+    exitDesignModeAndSave();
+    window.alert("Your palette has been saved locally.");
+
+  }
+
+  function saveCurrentColorsToFile_BROKEN() {
+    var state = getCurrentPaletteState();
+
+    // Do not force all users into design mode when they load the shared JSON
+    state.designMode = false;
+
+    var json = JSON.stringify(state, null, 2);
+    var blob = new Blob([json], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "currentColors.json";
+
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+
+    saveLocalState();
+    window.alert(
+      "Downloaded currentColors.json."
+    );
+  }
+
+
+
+/* color persistence ends here */
+
   function updatePaletteIndexOverlay() {
     var el = document.getElementById("paletteIndexOverlay");
     if (!el) return;
@@ -335,6 +590,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Start at global default (palettes[0])
   applyGlobalAll();
 
+
+/* more color persistence code starts here */
+  // After baseline, try to load shared dev palette, then local overrides
+  loadJsonState("currentColors.json", function () {
+    // Whether dev JSON exists or not, overlay my personal last state (if any)
+    loadLocalState();
+  });
+
+
+/* more color persistence code ends here */
+
   // ---- menu (family picker) ----
   var control = document.getElementById("paletteControl");
 
@@ -342,6 +608,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!control) return;
     control.style.display = "none";
   }
+
 
   function showMenu() {
     if (!control) return;
@@ -357,27 +624,46 @@ document.addEventListener("DOMContentLoaded", function () {
       control.appendChild(b);
     }
 
-    control.style.display = "block";
+    // Spacer-ish
+    var hr = document.createElement("div");
+    hr.style.margin = "4px 0";
+    control.appendChild(hr);
 
+    // Save current colors (download JSON)
+    var saveBtn = document.createElement("button");
+    saveBtn.type = "button";
+    saveBtn.textContent = "Save Colors";
+    saveBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      saveCurrentColorsToFile();
+    });
+    control.appendChild(saveBtn);
+
+    // Reset colors (via defaultColors.json)
+    var resetBtn = document.createElement("button");
+    resetBtn.type = "button";
+    resetBtn.textContent = "Reset Colors";
+    resetBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      resetToDefaults();
+    });
+    control.appendChild(resetBtn);
+
+    // Exit
     var exitBtn = document.createElement("button");
     exitBtn.type = "button";
     exitBtn.textContent = "Exit Design Mode";
     exitBtn.addEventListener("click", function (e) {
       e.preventDefault();
       e.stopPropagation();
-
-      hideMenu();
-
-      designMode = false;
-      document.body.classList.remove("design-mode");
-      setDesignCursors(false);
-      hasLocalChanges = false;
-      updatePaletteIndexOverlay();
-      updateAllSectionToneOverlays();
+      exitDesignModeAndSave();
     });
-    control.appendChild(exitBtn);
-  }
 
+    control.appendChild(exitBtn);
+    control.style.display = "block";
+  }
 
   if (control) {
     hideMenu();
@@ -486,7 +772,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!control || control.style.display === "none") return;
 
         var insideMenu = e.target.closest("#paletteControl");
-        var onLogo = e.target.closest("#paletteToggle");
+        var onLogo = e.target.closest("#paletteToggle") || e.target.closest("#paletteToggleMobile");
         if (!insideMenu && !onLogo) {
           e.preventDefault();
           e.stopPropagation();
@@ -497,58 +783,63 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  // ---- logo: tap cycles ALL; long-press (700ms) opens family menu ----
-  var logo = document.getElementById("paletteToggle");
-
-  if (logo) {
-    logo.addEventListener("contextmenu", function (e) {
+  // ---- logo(s): tap cycles ALL; long-press (700ms) opens family menu ----
+  var logoMain   = document.getElementById("paletteToggle");
+  var logoMobile = document.getElementById("paletteToggleMobile");
+  
+  var logos = [];
+  if (logoMain)   logos.push(logoMain);
+  if (logoMobile) logos.push(logoMobile);
+  
+  logos.forEach(function (logoEl) {
+    logoEl.addEventListener("contextmenu", function (e) {
       e.preventDefault();
     });
-  }
-
+  });
+  
   var pressTimer = null;
   var longPressFired = false;
-
+  
   function clearPressTimer() {
     if (pressTimer) {
       clearTimeout(pressTimer);
       pressTimer = null;
     }
   }
-
-  if (logo) {
-    logo.addEventListener("pointerdown", function () {
+  
+  logos.forEach(function (logoEl) {
+    logoEl.addEventListener("pointerdown", function () {
       longPressFired = false;
       clearPressTimer();
-
+  
       pressTimer = setTimeout(function () {
         longPressFired = true;
-
+  
         designMode = true;
         document.body.classList.add("design-mode");
         setDesignCursors(true);
-
+  
         updatePaletteIndexOverlay();
         updateAllSectionToneOverlays();
+        saveLocalState()
         showMenu();
       }, 700);
     });
-
-    logo.addEventListener("pointerup", clearPressTimer);
-    logo.addEventListener("pointerleave", clearPressTimer);
-    logo.addEventListener("pointercancel", clearPressTimer);
-
-    logo.addEventListener("click", function (e) {
+  
+    logoEl.addEventListener("pointerup", clearPressTimer);
+    logoEl.addEventListener("pointerleave", clearPressTimer);
+    logoEl.addEventListener("pointercancel", clearPressTimer);
+  
+    logoEl.addEventListener("click", function (e) {
       if (longPressFired) {
         e.preventDefault();
         e.stopPropagation();
         return;
       }
-
+  
       // When designMode is OFF, logo click should do nothing (freeze behavior)
       if (!designMode) return;
-
-      // Only warn if the user actually clicked a section since the last sweep
+  
       if (hasLocalChanges) {
         var ok = window.confirm(
           "This will reset your section tones to match the logo tone. Continue?"
@@ -559,17 +850,18 @@ document.addEventListener("DOMContentLoaded", function () {
           return;
         }
       }
-
+  
       e.preventDefault();
       e.stopPropagation();
-
+  
       var fam = paletteFamilies[activeFamilyIndex];
       globalIndex = (globalIndex + 1) % fam.count;
-
-      applyGlobalAll(); // global sweep, resets locals + overlays + hasLocalChanges
-      hasLocalChanges = false; // explicit: we intentionally overwrote sections
+  
+      applyGlobalAll();
+      hasLocalChanges = false;
+      saveLocalState()
     });
-  }
+  });
 
   // ---- section tap cycles that section (design mode only) ----
   function hookSection(target, selector) {
@@ -589,6 +881,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (localIndex[target] >= fam.count) localIndex[target] = 0;
 
       applyLocal(target);
+      saveLocalState()
     });
   }
 
@@ -615,10 +908,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setDesignCursors(on) {
     var cursor = on ? "pointer" : "default";
-
-    var logo = document.getElementById("paletteToggle");
-    if (logo) logo.style.cursor = cursor;
-
+  
+    // Both logos: desktop + tiny-mobile
+    var logoMain   = document.getElementById("paletteToggle");
+    var logoMobile = document.getElementById("paletteToggleMobile");
+  
+    if (logoMain)   logoMain.style.cursor   = cursor;
+    if (logoMobile) logoMobile.style.cursor = cursor;
+  
+    // Clickable sections in design mode
     var selectors = [
       ".site-header",
       ".hero",
@@ -626,7 +924,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "#reviews",
       "#contact"
     ];
-
+  
     for (var i = 0; i < selectors.length; i++) {
       var el = document.querySelector(selectors[i]);
       if (el) el.style.cursor = cursor;

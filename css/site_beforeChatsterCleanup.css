@@ -50,20 +50,10 @@ body.design-mode .site-header {
   gap: 12px;
 }
 
-/* Round dude logo (desktop/tablet) */
-.brand-logo-main {
-  height: 64px;   /* fixed */
+.brand img {
+  height: 52px;
   width: auto;
   display: block;
-  padding: 4px 0px;
-}
-
-/* Curvy text logo (tiny mobile) */
-.brand-logo-mobile {
-  height: 80px;   /* let the image breathe */
-  width: auto;
-  display: none;  /* hidden by default */
-  padding: 4px 0px;
 }
 
 .brand-text {
@@ -85,15 +75,6 @@ body.design-mode .site-header {
   white-space: nowrap;
 }
 
-/* Two logo roles: main vs mobile wordmark */
-.brand-logo-mobile {
-  display: none;  /* hidden on desktop */
-}
-
-.brand-logo-main {
-  display: block; /* shown on desktop */
-}
-
 .nav a {
   margin-left: 16px;
   text-decoration: none;
@@ -109,7 +90,7 @@ body.design-mode .site-header {
 ========================= */
 
 .hero {
-  padding: 16px 0px 56px;
+  padding: 56px 0;
 }
 
 .hero h1 {
@@ -122,12 +103,6 @@ body.design-mode .site-header {
   max-width: 52ch;
 }
 
-.hero-supra-tagline {
-  margin: 2px 0 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 0.9;
-}
 /* =========================
    Buttons
 ========================= */
@@ -155,7 +130,6 @@ body.design-mode .site-header {
 .section {
   position: relative;
 }
-
 .section {
   padding: 40px 0;
   border-top: 1px solid #eee;
@@ -198,9 +172,8 @@ body.design-mode .site-header {
    Palette Control (design-only)
 ========================= */
 
-#paletteToggle,
-#paletteToggleMobile {
-  -webkit-touch-callout: none;
+#paletteToggle {
+  -webkit-touch-callout: none; /* iOS long-press menu */
   -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -210,12 +183,14 @@ body.design-mode .site-header {
 
 .palette-control {
   position: fixed;
-  top: 72px;
+  top: 72px;          /* below header */
   left: 8px;
   z-index: 10000;
+
   display: flex;
   flex-direction: column;
   gap: 6px;
+
   background: rgba(0, 0, 0, 0.65);
   padding: 8px;
   border-radius: 6px;
@@ -227,6 +202,7 @@ body.design-mode .site-header {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+
   background: #ffffff;
   color: #111;
 }
@@ -235,19 +211,41 @@ body.design-mode .site-header {
   background: #f0f0f0;
 }
 
+/* =========================
+   Mobile adjustments
+========================= */
+
+@media (max-width: 450px) {
+  .site-header .wrap {
+    gap: 24px;
+  }
+
+  .site-header .brand img {
+    display: none;
+  }
+
+  .site-header .brand {
+    gap: 0;
+  }
+}
+
+
 #paletteIndexOverlay {
   position: fixed;
   top: 8px;
   right: 8px;
   z-index: 10001;
+
   background: rgba(0, 0, 0, 0.75);
   color: #fff;
   font-size: 12px;
   padding: 6px 10px;
   border-radius: 6px;
+
   display: none;
   pointer-events: none;
 }
+
 
 .tone-badge {
   position: absolute;
@@ -260,92 +258,13 @@ body.design-mode .site-header {
   border-radius: 3px;
   pointer-events: none;
   z-index: 5000;
-  display: none;
+  display: none; /* hidden by default */
 }
 
+/* Only show badges in design mode */
 body.design-mode .tone-badge {
   display: block;
 }
-
-/* Desktop: inline nav, no hamburger */
-.nav {
-  display: flex;
-  align-items: center;
-}
-
-.hamburger {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 26px;
-  line-height: 1;
-  padding: 4px 8px;
-  color: #0f2417; /* dark green */
-}
-
-
-@media (max-width: 600px) {
-  .brand-tagline {
-    display: block;
-  }
-
-  .hamburger {
-    display: block;
-  }
-
-  .nav {
-    position: absolute;
-    top: 100%;            /* just under the sticky header */
-    right: 16px;
-    margin: 0;
-    padding: 8px 16px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-top: none;
-    border-radius: 0 0 4px 4px;
-    display: none;        /* hidden until .open is added */
-    flex-direction: column;
-    gap: 6px;
-    z-index: 9000;
-  }
-
-  .nav.open {
-    display: flex;
-  }
-
-  .nav a {
-    margin-left: 0;
-    padding: 4px 0;
-  }
-}
-
-@media (max-width: 420px) {
-  .site-header .wrap {
-    gap: 8px;
-    min-height: 80px;   /* Tall navbar */
-  }
-
-  /* Hide round logo + text */
-  .brand-logo-main {
-    display: none;
-  }
-
-  .brand-text {
-    display: none;
-  }
-
-  /* SHOW curvy text — do NOT touch its size here */
-  .brand-logo-mobile {
-    display: block;
-  }
-
-  .brand {
-    gap: 0;
-    flex: 1;
-  }
-}
-
 
 /* =========================
    Viewport debug overlay
@@ -366,3 +285,4 @@ body.design-mode::after {
   z-index: 9999;
   opacity: 0.85;
 }
+

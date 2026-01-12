@@ -18,8 +18,26 @@
   <header class="site-header">
     <div class="tone-badge" id="tone-header"></div>
     <div class="wrap">
+
       <div class="brand">
-        <img id="paletteToggle" src="img/logo_nav.png" alt="" draggable="false"/>
+        <!-- Main round logo (used on desktop/tablet and for palette design) -->
+        <img
+          id="paletteToggle"
+          class="brand-logo-main"
+          src="img/logo_nav.png"
+          alt=""
+          draggable="false"
+        />
+      
+        <!-- Compact curvy-text logo (only for very tight mobile) -->
+        <img
+          id="paletteToggleMobile"
+          class="brand-logo-mobile"
+          src="img/logo_nav_mobile.png"
+          alt="Lance Exteriors"
+          draggable="false"
+        />
+      
         <div class="brand-text">
           <span class="brand-name">Lance Exteriors</span>
           <span class="brand-tagline">Roof Cleaning and Care</span>
@@ -49,12 +67,18 @@
     <section class="hero">
       <div class="tone-badge" id="tone-hero"></div>
       <div class="wrap">
-        <h1>Make your home look new again.</h1>
-        <p>Roof cleaning, gutters, and exterior wash - done safely and professionally.</p>
-        <div class="cta">
-          <a class="btn" href="#contact">Get a Quote</a>
-          <a class="btn btn-ghost" href="tel:+1XXXXXXXXXX">Call</a>
-        </div>
+
+            <!-- Supra-hero rotating tagline -->
+            <p class="hero-supra-tagline">
+              <span id="heroTagline">Roof Cleaning & Moss Control</span>
+            </p>
+
+            <h1>Make your home look new again.</h1>
+            <p>Roof cleaning, gutters, and exterior wash - done safely and professionally.</p>
+            <div class="cta">
+              <a class="btn" href="#contact">Get a Quote</a>
+              <a class="btn btn-ghost" href="tel:+1XXXXXXXXXX">Call</a>
+            </div>
       </div>
     </section>
 
