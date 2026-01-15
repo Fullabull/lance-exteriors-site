@@ -93,26 +93,32 @@ document.addEventListener("DOMContentLoaded", function () {
   (function () {
     // Each tagline has its own min/max display time in seconds
     const taglines = [
+      { text: "Roof Protection", min: 7, max: 10 },
+      { text: "Roof Moss Removal", min: 7, max: 10 },
+      { text: "Roof Moss Prevention", min: 7, max: 10 },
+      { text: "Roof Restoration", min: 7, max: 10 },
+      { text: "Roof Restoration & Preservation", min: 7, max: 10 },
+      { text: "Roof Restoration, Construction, & Demolition", min: 7, max: 10 },
       { text: "Roof Care & Moss Control", min: 7, max: 10 },
       { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
-      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+    //{ text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
       { text: "Roof Cleaning & Moss Control", min: 9, max: 12 },
       { text: "Roof Cleaning & Moss Prevention", min: 7, max: 10 },
-      { text: "Roof Moss Clearing & Prevention", min: 6, max: 10 },
-      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+    //{ text: "Roof Moss Clearing & Prevention", min: 6, max: 10 },
+    //{ text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
       { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
       { text: "Roof Moss Removal + Zinc Protection", min: 6, max: 9 },
       { text: "Roof Moss Removal + Zinc Treatment", min: 6, max: 9 },
       { text: "Roof Moss Removal + Long-Term Control", min: 6, max: 9 },
       { text: "Moss Removal + Roof Protection", min: 7, max: 10 },
       { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
-      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+    //{ text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
       { text: "Roof Moss Removal + Treatment Included", min: 6, max: 8 },
       { text: "Roof Moss Removal + Deep Treatment Upgrade", min: 6, max: 8 },
       { text: "Roof Moss Removal + Long-Term Treatment Option", min: 6, max: 8 },
       { text: "Architectural Shingle Roof Care", min: 8, max: 11 },
       { text: "Roof Cleaning & Care", min: 10, max: 15 },                 // extra time
-      { text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
+    //{ text: "Roof Moss Removal & Prevention", min: 10, max: 15 },       // extra time
       { text: "Architectural Shingle Moss Control", min: 8, max: 11 },
       { text: "Architectural Shingle Moss Removal", min: 8, max: 11 }
     ];

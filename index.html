@@ -40,7 +40,7 @@
       
         <div class="brand-text">
           <span class="brand-name">Lance Exteriors</span>
-          <span class="brand-tagline">Roof Cleaning and Care</span>
+          <span class="brand-tagline">Roof Moss Removal &amp; Prevention</span>
         </div>
       </div>
 
@@ -70,10 +70,18 @@
 
             <!-- Supra-hero rotating tagline -->
             <p class="hero-supra-tagline">
-              <span id="heroTagline">Roof Cleaning & Moss Control</span>
+              <span id="heroTagline">Roof Cleaning &amp; Moss Control</span>
             </p>
 
             <h1>Make your home look new again.</h1>
+
+            <img
+              id="hero-photo"
+              class="hero-photo"
+              src="img/hero-01-desktop.png"
+              alt="Before and after roof moss removal"
+            />
+
             <p>Roof cleaning, gutters, and exterior wash - done safely and professionally.</p>
             <div class="cta">
               <a class="btn" href="#contact">Get a Quote</a>
@@ -164,6 +172,104 @@
       document.getElementById('hamburgerBtn').onclick = function () {
             document.querySelector('.nav').classList.toggle('open');
       };
+  </script>
+
+  <script>
+    const heroDesktop = [
+      "img/hero-03-desktop.jpg",
+      "img/hero-04-desktop.jpg",
+      "img/hero-05-desktop.jpg",
+      "img/hero-06-desktop.jpg",
+      "img/hero-01-desktop.png",
+      "img/hero-02-desktop.jpg"
+    ];
+  
+    const heroMobile = [
+      "img/hero-03-mobile.jpg",
+      "img/hero-04-mobile.jpg",
+      "img/hero-05-mobile.jpg",
+      "img/hero-06-mobile.jpg",
+      "img/hero-01-mobile.png",
+      "img/hero-02-mobile.jpg"
+    ];
+  
+    let heroIndex = 0;
+    const heroImg = document.getElementById("hero-photo");
+  
+    function pickSet() {
+      return window.innerWidth < 768 ? heroMobile : heroDesktop;
+    }
+  
+    // initial image
+    heroImg.src = pickSet()[0];
+  
+    function swapHero() {
+      const set = pickSet();
+  
+      heroImg.classList.add("is-fading");
+  
+      setTimeout(() => {
+        heroIndex = (heroIndex + 1) % set.length;
+        heroImg.src = set[heroIndex];
+        heroImg.classList.remove("is-fading");
+      }, 300);
+    }
+  
+    // autoplay
+    let timer = setInterval(swapHero, 7000);
+  
+    function resetTimer() {
+      clearInterval(timer);
+      timer = setInterval(swapHero, 7000);
+    }
+  
+    // pause on hover
+    heroImg.addEventListener("mouseenter", () => {
+      clearInterval(timer);
+    });
+  
+    // resume after hover with full delay
+    heroImg.addEventListener("mouseleave", () => {
+      resetTimer();
+    });
+  
+    // ---- Mobile swipe support ----
+    let touchStartX = 0;
+    let touchEndX = 0;
+  
+    heroImg.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+  
+    heroImg.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+  
+    function handleSwipe() {
+      const delta = touchEndX - touchStartX;
+  
+      if (Math.abs(delta) < 50) return;
+  
+      const set = pickSet();
+  
+      if (delta < 0) {
+        // left swipe → next image
+        swapHero();
+        resetTimer();
+      } else {
+        // right swipe → previous image
+        heroIndex = (heroIndex - 1 + set.length) % set.length;
+        heroImg.src = set[heroIndex];
+        resetTimer();
+      }
+    }
+  
+    // keep current image in sync on resize
+    window.addEventListener("resize", () => {
+      const set = pickSet();
+      heroImg.src = set[heroIndex];
+    });
   </script>
 
 <div id="paletteIndexOverlay"></div>
